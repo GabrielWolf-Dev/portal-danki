@@ -1,0 +1,18 @@
+{
+  "name": "portal-danki",
+  "version": "1.0.0",
+  "description": "Portal de noticias feito no curso de Node.js da Danki Code",
+  "main": "index.js",
+  "repository": "https://github.com/GabrielWolf-Dev/portal-danki.git",
+  "author": "Gabriel Wolf <65361452+GabrielWolf-Dev@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "yarn nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
