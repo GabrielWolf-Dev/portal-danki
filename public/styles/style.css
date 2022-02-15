@@ -175,6 +175,30 @@ button, input[type='submit'] {
     border-bottom: 4px solid var(--color-white);
 }
 
+.last-news {
+    width: 100%;
+    padding: 48px 2%;
+    text-align: center;
+    background-color: var(--color-gray-white);
+}
+
+.last-news__grid {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 16px;
+}
+
+.last-news__news, .last-news__more-views {
+    height: 400px;
+    background-color: red;
+    border-radius: 12px;
+}
+
 @media (max-width: 768px) {
     :root {
         font-size: 16px;
