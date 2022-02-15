@@ -21,12 +21,12 @@ app.get('/', (req, res) => {
     if(searchQuery === undefined){
         res.render('home', {});
     } else {
-        res.send('Você buscou por ' + searchQuery);
+        res.render('search', {});
     }
 });
 
 app.get('/:slug', (req, res) => {
-    res.send(req.params.slug);
+    res.render('post', {});
 });
 
 // Setup run local server
