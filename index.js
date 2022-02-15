@@ -2,8 +2,24 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const path = require('path');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 const app = express();
+dotenv.config();
+
+// Connection Mongo Db
+const urlConnect = `mongodb+srv://root:${process.env.PASS_MONGODB}@cluster0.ihfw2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+mongoose.connect(urlConnect, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => {
+    console.log('Conectado!');
+})
+.catch(error => {
+    throw new Error(error.message);
+});
 
 // Setup Body Parser
 app.use(bodyParser.json()); // to support JSON-encoded bodies
