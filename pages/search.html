@@ -5,50 +5,38 @@
 
         <div class="search-box__search container">
             <header class="search-box__search__header">
-                <h2>44 Resultados</h2>
+                <h2><%= postsAmount %> Resultados</h2>
             </header><!--search-box__search__header-->
 
-            <article class="search-box__search__new">
-                <img class="search__new__img" src="/public/assets/imgs/mais-lidas.png" alt="Notícias mais lidas" />
 
-                <main class="search__new__content">
-                    <h3 class="search__new__content__title">Natureza</h3>
+            <% if(postsAmount !== 0) { %>
+                <% for(let i = 0; i < dataPostsFilter.length; i++) { %>
+                    <article class="search-box__search__new">
+                        <img class="search__new__img" src="/public/assets/imgs/mais-lidas.png" alt="Notícias mais lidas" />
 
-                    <p class="search__new__content__desc">
-                        A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?
-                    </p><!--more-views__view__content__desc-->
+                        <main class="search__new__content">
+                            <h3 class="search__new__content__title"><%= dataPostsFilter[i].category %></h3>
 
-                    <a class="search__new__content__post-link" href="/natureza">Saiba Mais</a>
-                </main><!--search__new__content-->
-            </article><!--search-box__search__new-->
+                            <p class="search__new__content__desc">
+                                <%- dataPostsFilter[i].contentResume %>
+                            </p><!--more-views__view__content__desc-->
+                            <p class="more-views__view__content__views" style="margin: 2px 0 8px 0;">
+                                (<%- dataPostsFilter[i].views === 0 
+                                ? "Nenhuma visualização" 
+                                : dataPostsFilter[i].views + " visualizações" %>)
+                            </p>
 
-            <article class="search-box__search__new">
-                <img class="search__new__img" src="/public/assets/imgs/mais-lidas.png" alt="Notícias mais lidas" />
+                            <a class="search__new__content__post-link" href="<%= dataPostsFilter[i].slug %>">Saiba Mais</a>
+                        </main><!--search__new__content-->
+                    </article><!--search-box__search__new-->
+                <% } %>
+            <% } else { %>
+                    <div class="seach-box__not-found-search">
+                        <h2 class="seach-box__not-found-search__msg">Não foi possível encontrar o resultado :(</h2>
 
-                <main class="search__new__content">
-                    <h3 class="search__new__content__title">Natureza</h3>
-
-                    <p class="search__new__content__desc">
-                        A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?
-                    </p><!--more-views__view__content__desc-->
-
-                    <a class="search__new__content__post-link" href="/natureza">Saiba Mais</a>
-                </main><!--search__new__content-->
-            </article><!--search-box__search__new-->
-
-            <article class="search-box__search__new">
-                <img class="search__new__img" src="/public/assets/imgs/mais-lidas.png" alt="Notícias mais lidas" />
-
-                <main class="search__new__content">
-                    <h3 class="search__new__content__title">Natureza</h3>
-
-                    <p class="search__new__content__desc">
-                        A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?
-                    </p><!--more-views__view__content__desc-->
-
-                    <a class="search__new__content__post-link" href="/natureza">Saiba Mais</a>
-                </main><!--search__new__content-->
-            </article><!--search-box__search__new-->
+                        <img class="seach-box__not-found-search__img" src="/public/assets/svg/not-found-search.svg" alt="Não foi possível encontrar posts da pesquisa" />
+                    </div><!--seach-box__not-found-search"-->
+            <% } %>
         </div><!--search-box__search-->
     </main><!--search-box-->
 

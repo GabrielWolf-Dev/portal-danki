@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const { filterXSS } = require('xss');
 
 const app = express();
 const Posts = require('./Posts.js');
@@ -34,7 +35,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, '/pages'));
 
 app.get('/', (req, res) => {
-    const searchQuery = req.query.search;
+    const searchQuery = filterXSS(req.query.search);
 
     if(searchQuery === undefined){
         Posts.find({ })
@@ -55,17 +56,101 @@ app.get('/', (req, res) => {
                     category: post.category
                 }
             });
-            res.render('home', {
-                postsRefactored
-            }); 
+
+            Posts.find({})
+            .sort({'views': -1})
+            .limit(3)
+            .exec((error, mostPosts) => {
+                if(error){
+                    throw new Error(error.message);
+                }
+            
+                const mostNews = mostPosts.map(mostPost => {
+                    return {
+                        title: mostPost.title,
+                        contentResume: mostPost.content.substr(0, 100) + "...",
+                        img: mostPost.img,
+                        slug: mostPost.slug,
+                        category: mostPost.category,
+                        views: mostPost.views
+                    }
+                });
+
+                res.render('home', {
+                    postsRefactored,
+                    mostNews
+                });
+            });
         });
     } else {
-        res.render('search', {});
+        Posts.find({
+            title: {
+                $regex: searchQuery,
+                $options: 'i'
+            }
+        },
+        (error, postsSearched) => {
+            if(error) {
+                throw new Error(error.message);
+            }
+
+            const dataPostsFilter = postsSearched.map(dataFilter => {
+                return {
+                    contentResume: dataFilter.content.substr(0, 200) + '...',
+                    slug: dataFilter.slug,
+                    category: dataFilter.category,
+                    views: dataFilter.views
+                };
+            });
+
+            res.render('search', {
+                dataPostsFilter,
+                postsAmount: postsSearched.length
+            });
+        });
     }
 });
 
 app.get('/:slug', (req, res) => {
-    res.render('post', {});
+    const { slug } = req.params;
+
+    Posts.findOneAndUpdate({ slug }, {
+        $inc: { views: 1 }
+    }, { new: true },
+    (error, response) => {
+        if(error){
+            throw new Error(error.message);
+        }
+
+        if(response !== null){
+            Posts.find({})
+            .sort({'views': -1})
+            .limit(3)
+            .exec((error, mostPosts) => {
+                if(error){
+                    throw new Error(error.message);
+                }
+            
+                const mostNews = mostPosts.map(mostPost => {
+                    return {
+                        title: mostPost.title,
+                        contentResume: mostPost.content.substr(0, 100) + "...",
+                        img: mostPost.img,
+                        slug: mostPost.slug,
+                        category: mostPost.category,
+                        views: mostPost.views
+                    }
+                });
+    
+                res.render('post', {
+                    newSelected: response,
+                    mostNews
+                });
+            });
+        } else {
+            res.redirect('/');
+        }
+    });
 });
 
 // Setup run local server

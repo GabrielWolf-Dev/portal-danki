@@ -295,6 +295,12 @@ button, input[type='submit'] {
     color: var(--color-gray);
 }
 
+.more-views__view__content__views {
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: var(--color-gray-darker);
+}
+
 .more-views__view__content__link-post {
     width: 120px;
     height: 32px;
@@ -347,6 +353,23 @@ button, input[type='submit'] {
 .search-box__search {
     background-color: var(--color-white);
     border-radius: 12px;
+}
+
+.seach-box__not-found-search {
+    width: 100%;
+    padding: 48px 2%;
+    text-align: center;
+    color: var(--color-red);
+}
+
+.seach-box__not-found-search__msg {
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+}
+
+.seach-box__not-found-search__img {
+    width: 100%;
+    max-width: 650px;
 }
 
 .search-box__search__header {

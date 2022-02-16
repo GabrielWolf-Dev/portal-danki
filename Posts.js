@@ -8,7 +8,8 @@ const postSchema = new Schema({
     content: String,
     slug: String,
     author: String,
-    authorImg: String
+    authorImg: String,
+    views: Number
 }, { collection: 'posts' });
 
 const Posts = mongoose.model('Posts', postSchema);
