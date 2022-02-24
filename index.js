@@ -161,13 +161,36 @@ app.get('/:slug', (req, res) => {
     });
 });
 
+const loginUsers = [
+    {
+        name: 'Joao',
+        pass: '123DDaa'
+    }
+];
+
 app.get('/admin/login', (req, res) => {
     if(req.session.login == null) {
-        req.session.login = 'Gabriel';
-        res.send('Sessão criada :)');
+        res.render('admin-login');
     } else {
-        res.send(req.session.login);
+        res.render('admin-panel', { login: req.session.login });
     }
+});
+
+app.post('/admin/login', (req, res) => {
+    const name = filterXSS(req.body.name);
+    const pass = filterXSS(req.body.pass);
+    const sessionData = req.session;
+
+    loginUsers.forEach(user => {
+        if(user.name == name && user.pass == pass) {
+            sessionData.login = {
+                name,
+                pass
+            };
+
+            res.redirect('/admin/login');
+        }
+    });
 });
 
 // Setup run local server
