@@ -5,6 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const fileupload = require('express-fileupload');
+const fs = require('fs');
 const { filterXSS } = require('xss');
 const session = require('express-session');
 
@@ -221,7 +222,7 @@ app.post('/admin/login', (req, res) => {
 app.get('/admin/delete/:id', (req, res) => {
     Posts.deleteOne({ _id: req.params.id })
     .then(() => {
-        alert('Notícia deletada com sucesso!');
+        console.log('Notícia deletada com sucesso!');
         res.redirect('/admin/login');
     });
 });
@@ -229,17 +230,27 @@ app.get('/admin/delete/:id', (req, res) => {
 app.post('/admin/register', (req, res) => {
     const {
         title,
-        linkImg,
         newContent,
         categoryNew,
         authorName,
         authorURLImg
     } = req.body;
     const slugFormated = filterXSS(title.replaceAll(' ', '-').replaceAll(/[!?.#$%|]/g, '').toLowerCase());
+    const { file } = req.files;
+    const [name, format] = file.name.split('.');
+    const currentDate = new Date().getTime();
+    const image = `${name}-${currentDate}.jpg`;
+    const imgURL = `http://localhost:5000/public/assets/files/${image}`;
+
+    if(format == 'jpg'){
+        file.mv(`${__dirname}/public/assets/files/${image}`);
+    } else { // Deletar o arquivo, tirando na memória(Otimização)
+        fs.unlinkSync(file.tempFilePath);
+    }
 
     Posts.create({
         title: filterXSS(title),
-        img: filterXSS(linkImg),
+        img: imgURL,
         category: filterXSS(categoryNew),
         content: filterXSS(newContent),
         slug: slugFormated,
@@ -248,7 +259,7 @@ app.post('/admin/register', (req, res) => {
         views: 0
     });
     
-    alert('Notícia cadastrada com sucesso!');
+    console.log('Notícia cadastrada com sucesso!');
     res.redirect('/admin/login');
 });
 
