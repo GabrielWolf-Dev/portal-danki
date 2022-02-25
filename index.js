@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const fileupload = require('express-fileupload');
 const { filterXSS } = require('xss');
 const session = require('express-session');
 
@@ -34,6 +35,12 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(session({
     secret: 'keyboard cat', // Como é um gerador de keys, para o usuário não acessar os dados da sessão e ser seguro
     cookie: { maxAge: 60000 } // Definiu a sessão como cookie
+}));
+
+// Upload de arquivos:
+app.use(fileupload({
+    useTempFiles: true,
+    tempFileDir: path.join(__dirname, 'temp')
 }));
 
 // Setup for read HTML files with 'ejs'
@@ -161,10 +168,10 @@ app.get('/:slug', (req, res) => {
     });
 });
 
-const loginUsers = [
+const loginUsers = [ // Ou puxar no banco de dados
     {
         name: 'Joao',
-        pass: '123DDaa'
+        pass: '123'
     }
 ];
 
@@ -172,7 +179,25 @@ app.get('/admin/login', (req, res) => {
     if(req.session.login == null) {
         res.render('admin-login');
     } else {
-        res.render('admin-panel', { login: req.session.login });
+        Posts.find({ })
+        .sort({ '_id': -1 })
+        .exec((error, posts) => {
+            if(error){
+                throw new Error(error.message);
+            }
+            
+            const postsRefactored = posts.map(post => {
+                return {
+                    title: post.title,
+                    id: post.id,
+                }
+            });
+
+            res.render('admin-panel', {
+                login: req.session.login,
+                posts: postsRefactored
+            });
+        });
     }
 });
 
@@ -191,6 +216,40 @@ app.post('/admin/login', (req, res) => {
             res.redirect('/admin/login');
         }
     });
+});
+
+app.get('/admin/delete/:id', (req, res) => {
+    Posts.deleteOne({ _id: req.params.id })
+    .then(() => {
+        alert('Notícia deletada com sucesso!');
+        res.redirect('/admin/login');
+    });
+});
+
+app.post('/admin/register', (req, res) => {
+    const {
+        title,
+        linkImg,
+        newContent,
+        categoryNew,
+        authorName,
+        authorURLImg
+    } = req.body;
+    const slugFormated = filterXSS(title.replaceAll(' ', '-').replaceAll(/[!?.#$%|]/g, '').toLowerCase());
+
+    Posts.create({
+        title: filterXSS(title),
+        img: filterXSS(linkImg),
+        category: filterXSS(categoryNew),
+        content: filterXSS(newContent),
+        slug: slugFormated,
+        author: filterXSS(authorName),
+        authorImg: filterXSS(authorURLImg),
+        views: 0
+    });
+    
+    alert('Notícia cadastrada com sucesso!');
+    res.redirect('/admin/login');
 });
 
 // Setup run local server

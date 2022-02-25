@@ -5,8 +5,73 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do Administrador</title>
+    <link rel="stylesheet" href="/public/styles/admin.style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Seja bem vindo <%= login.name %></h1>
+    <header class="header">
+        <h1 class="header__title">Cadastro de notícia</h1>
+    </header><!--header-->
+
+    <main class="register">
+        <h2 class="register__apresentation">Seja bem vindo <%= login.name %> :)</h2>
+
+        <form class="register__form" action="/admin/register" method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <label class="register__form__label" for="title">Título:</label>
+                <input class="register__form__input" type="text" id="title" name="title" placeholder="Título da notícia" />
+            </fieldset>
+
+            <fieldset>
+                <label class="register__form__label" for="linkImg">Imagem:</label>
+                <input class="register__form__input" type="text" id="linkImg" name="linkImg" placeholder="URL da imagem" />
+            </fieldset>
+            
+            <fieldset>
+                <label class="register__form__label" for="categoryNew">Categoria:</label>
+                <input class="register__form__input" type="text" id="categoryNew" name="categoryNew" placeholder="Categoria da notícia" />
+            </fieldset>
+
+            <fieldset>
+                <label class="register__form__label" for="authorName">Autor:</label>
+                <input class="register__form__input" type="text" id="authorName" name="authorName" placeholder="Nome do autor" />
+            </fieldset>
+
+            <fieldset>
+                <label class="register__form__label" for="authorURLImg">Imagem autor:</label>
+                <input class="register__form__input" type="text" id="authorURLImg" name="authorURLImg" placeholder="URL da imagem do autor" />
+            </fieldset>
+            
+            <fieldset>
+                <label class="register__form__label" for="newContent">Notícia:</label>
+                <textarea class="register__form__textarea" type="text" id="newContent" name="newContent" placeholder="Escreva a sua notícia :)"></textarea>
+            </fieldset>
+
+            <div class="register__form__box-sub">
+                <button class="register__form__submit" name="registerNew" type="submit">Cadastrar</button>
+            </div><!--register__form__box-sub-->
+        </form>
+    </main><!--register-->
+
+    <section class="list-news">
+        <h2 class="list-news__title">Notícias cadastradas:</h2>
+
+        <% for(let i = 0; i < posts.length; i++) {%>
+            <aside class="list-news__new">
+                <p class="list-news__new__titleNew">
+                    <strong class="list-news__new__strong">Título da notícia:</strong> <%= posts[i].title %>
+                </p>
+    
+                <button class="list-news__new__btn">
+                    <a class="list-news__new__btn-link" href="/admin/delete/<%= posts[i].id %>">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a><!--list-news__new__btn-link-->
+                </button><!--list-news__new__btn-->
+            </aside><!--list-news__new-->
+        <% } %>
+    </section><!--list-news-->
 </body>
 </html>

@@ -12,7 +12,7 @@
     --color-white: #FFFFFF;
     --color-black: #000000;
     --color-blue-white: #0AACDC;
-    --color-blue-dark: #0072CA;
+    --color-cian: #008BB4;
     --color-purple-white: #3F51B5;
     --color-purple-dark: #33439B;
     --color-gray-mat: #7B8591;
@@ -21,9 +21,7 @@
     --color-gray-darker: #303336;
     --color-green: #40BE65;
     --color-yellow: #FFD430;
-    --color-cian: #008BB4;
     --color-red: #FF4967;
-    --color-brown: ;
 }
 
 ul { list-style-type: none; }
