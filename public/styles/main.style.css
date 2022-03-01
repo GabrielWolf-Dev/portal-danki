@@ -160,27 +160,6 @@ button, input[type='submit'] {
     font-size: 1.25rem;
 }
 
-.main-info__slick-btns {
-    width: 80px;
-    position: absolute;
-    left: 50%;
-    bottom: 40px;
-    transform: translateX(-50%);
-}
-
-.main-info__slick {
-    width: calc(100% / 3 - 8px);
-    height: 12px;
-    margin: 0 2px;
-    display: inline-block;
-    border-bottom: 4px solid rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-}
-
-.main-info__slick--active {
-    border-bottom: 4px solid var(--color-white);
-}
-
 /* Last News */
 
 .last-news {

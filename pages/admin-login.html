@@ -12,11 +12,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 <body>
-    <form method="POST">
-        <input type="text" name="name" />
-        <input type="password" name="pass" />
+    <header class="header">
+        <h1 class="header__title">Página de Login</h1>
+    </header><!--header-->
 
-        <button name="login-act" type="submit">Logar</button>
-    </form>
+    <main class="form-box">
+        <form method="POST" class="form">
+            <input class="form__input" type="text" name="name" placeholder="Digite o seu nome" />
+            <input class="form__input" type="password" name="pass" placeholder="Digite a senha" />
+    
+            <button class="form__btn" name="login-act" type="submit">Logar</button>
+        </form><!--form-->
+    </main><!--form-box-->
 </body>
 </html>
